@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 4: Complex Numbers and Their Role in Audio Processing</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- MathJax Configuration -->
+    <script type="text/javascript">
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            chtml: {
+                scale: 1.4  /* Adjust this value to make formulas bigger (1.4 = 140%) */
+            }
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2E86C1;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.75em;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .example {
+            background-color: #EAF2F8;
+            padding: 15px;
+            border-left: 4px solid #3498DB;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .example h3 {
+            margin-top: 0;
+        }
+
+        .example ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .example li {
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-left: 4px solid #3498DB;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        /* Responsive design */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 1.75em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            h3 {
+                font-size: 1.25em;
+            }
+            ul, ol {
+                padding-left: 15px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            h2 {
+                font-size: 1.25em;
+            }
+            h3 {
+                font-size: 1.1em;
+            }
+            body {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Chapter 4: Complex Numbers and Their Role in Audio Processing</h1>
+
+<h2>4.1 Introduction: The Importance of Complex Numbers</h2>
+<p>Complex numbers are essential in audio processing, especially for analyzing signals in the frequency domain. By representing signals with real and imaginary components, complex numbers facilitate tasks like Fourier transforms and phasor analysis, which are foundational in frequency analysis, signal manipulation, and audio filtering.</p>
+
+<h2>4.2 Basics of Complex Numbers</h2>
+<p>A complex number has both a real part and an imaginary part, written as:</p>
+<p class="formula">\( z = a + bi \)</p>
+<ul>
+    <li><strong>\(a\)</strong>: Real part</li>
+    <li><strong>\(b\)</strong>: Imaginary part, with \(i\) as the imaginary unit where \(i^2 = -1\)</li>
+</ul>
+
+<h3>Magnitude and Phase</h3>
+<p>The magnitude (or modulus) measures the distance of a complex number from the origin in the complex plane, and the phase (or argument) represents the angle from the real axis:</p>
+<p class="formula">\( |z| = \sqrt{a^2 + b^2} \),  \( \theta = \text{arg}(z) = \tan^{-1} \left( \frac{b}{a} \right) \)</p>
+
+<h3>Example: Complex Representation of a Signal</h3>
+<div class="example">
+    <p>Consider a sinusoidal signal as a complex number:</p>
+    <pre><code>
+s(t) = 5e^{j2\pi ft}
+    </code></pre>
+    <p>Here, the signal has an amplitude of 5 and a frequency \( f \). This representation is common in the frequency domain and simplifies operations involving amplitude and phase.</p>
+</div>
+
+<h2>4.3 Phasors in Audio Processing</h2>
+<p>Phasors are complex numbers representing sinusoidal waveforms. They capture both amplitude and phase, simplifying many audio processing tasks, such as filtering, modulation, and analysis of wave interference.</p>
+
+<h3>Example: Using Phasors to Represent a Sound Wave</h3>
+<div class="example">
+    <p>Consider a sound wave with frequency \( f \) and phase \( \theta \):</p>
+    <pre><code>
+s(t) = A e^{j(2\pi ft + \theta)}
+    </code></pre>
+    <p>The phasor \( s(t) \) represents the wave’s amplitude \( A \) and phase \( \theta \). Phasors are especially useful in simulating and analyzing wave interference in audio signals.</p>
+</div>
+
+ <h2>4.4 Fourier Transforms and Complex Numbers in Audio Processing</h2>
+<p>The Fourier transform decomposes a time-domain signal into its frequency components using complex numbers. This process provides a representation where each frequency has a real and imaginary part:</p>
+<ul>
+    <li><strong>Real Component</strong>: Represents the cosine (in-phase) part of each frequency component.</li>
+    <li><strong>Imaginary Component</strong>: Represents the sine (out-of-phase) part.</li>
+</ul>
+<p>The Fourier transform formula is:</p>
+<p class="formula">\( X(f) = \int_{-\infty}^{\infty} x(t) \, e^{-j2\pi ft} \, dt \)</p>
+<p>where:
+<ul>
+    <li>\( x(t) \): Time-domain signal</li>
+    <li>\( X(f) \): Transformed frequency-domain signal</li>
+    <li>\( e^{-j2\pi ft} \): Incorporates cosine and sine terms, capturing amplitude and phase</li>
+</ul>
+</p>
+
+<h3>Example: Fourier Transform of a Simple Signal</h3>
+<div class="example">
+    <p>Consider a sinusoidal signal \( s(t) = \sin(2\pi t) \). The Fourier transform analyzes its frequencies:</p>
+    <ul>
+        <li><strong>Real and Imaginary Parts</strong>: The transform reveals in-phase (real) and out-of-phase (imaginary) components.</li>
+        <li><strong>Interpretation</strong>: Dominant frequencies, phase shifts, and amplitudes are identified, enabling tasks like filtering or spectrum analysis.</li>
+    </ul>
+    <p><strong>Application</strong>: This analysis is key in designing audio filters and isolating specific frequencies in signals.</p>
+</div>
+
+<h3>Interactive Exercise Suggestion</h3>
+<p>An interactive Fourier transform tool could visualize waveforms like sine or square waves, enabling users to adjust harmonics and observe phase shifts. This hands-on approach can reinforce understanding of real and imaginary parts in complex signals.</p>
+
+<h2>4.5 Hilbert Transform and Phase Shift</h2>
+<p>The Hilbert transform creates an analytic signal by phase-shifting the original signal by 90 degrees. This is valuable in audio processing for envelope detection, demodulation, and other applications requiring phase information.</p>
+
+<h3>Example: Applying the Hilbert Transform</h3>
+<div class="example">
+    <p>For a real signal \( s(t) \), the Hilbert transform \( \hat{s}(t) \) generates a phase-shifted component:</p>
+    <pre><code>
+\hat{s}(t) = \mathcal{H}\{s(t)\}
+    </code></pre>
+    <p>Combining \( s(t) \) and \( \hat{s}(t) \) yields a complex signal that encapsulates amplitude and phase.</p>
+</div>
+
+<h2>4.6 Complex Conjugate and Its Use in Audio</h2>
+<p>The complex conjugate of a complex number \( z = a + bi \) is \( \overline{z} = a - bi \). Complex conjugates are used in calculating signal power and energy, as they simplify the determination of the magnitude squared of a signal.</p>
+
+<h3>Example: Using Complex Conjugates to Calculate Power</h3>
+<div class="example">
+    <p>For a signal \( z = a + bi \), the power is given by:</p>
+    <pre><code>
+P = z \overline{z} = a^2 + b^2
+    </code></pre>
+    <p>This represents the magnitude squared, a measure of the signal’s energy or intensity.</p>
+</div>
+
+<h2>4.7 Practice Problems</h2>
+<ul>
+    <li>Represent the complex number \( z = 3 + 4i \). Calculate its magnitude and phase.</li>
+    <li>Express a sinusoidal signal as a phasor with amplitude 10 and frequency 500 Hz.</li>
+    <li>Perform a Fourier transform on \( s(t) = 5 \sin(2\pi t) \), identifying its frequency components.</li>
+    <li>Apply the Hilbert transform to \( s(t) = \cos(2\pi t) \) and construct its analytic signal.</li>
+</ul>
+
+</body>
+</html>

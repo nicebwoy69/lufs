@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial: Derivatives, Integrals, and Audio Processing - Chapter 2</title>
+	
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- MathJax Configuration -->
+    <script type="text/javascript">
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            chtml: {
+                scale: 1.4  /* Adjust this value to make formulas bigger */
+            }
+        };
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background-color: #f4f4f4;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        pre {
+            background-color: #e8e8e8;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .formula {
+    font-weight: bold;
+    font-size: 1.2em;
+    background-color: #a3a3a321;
+    padding: 5px;
+    margin: 10px 0;
+    display: inline-block;
+    color: #000000;
+    padding: 12px;
+}
+        ul {
+            margin: 20px 0;
+            padding: 0;
+            list-style: none;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .example {
+            border-left: 4px solid #4CAF50;
+            padding-left: 10px;
+            background-color: #f9f9f9;
+            margin: 20px 0;
+            padding: 10px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Chapter 2: Derivatives, Integrals, and Audio Processing</h1>
+
+    <h2>2.1 Introduction: Importance of Calculus in Audio</h2>
+    <p>Calculus plays a crucial role in audio processing, helping us measure how signals change over time. Derivatives allow us to understand the rate of change, while integrals measure total accumulated values such as energy or loudness. By mastering these concepts, audio engineers can create more accurate and responsive audio effects, analyze sound properties, and enhance overall audio quality.</p>
+
+    <h2>2.2 Derivatives in Audio Processing</h2>
+    <p>A derivative measures how fast a quantity is changing at any given moment. In audio, derivatives are used to analyze how quickly a signal’s amplitude, frequency, or other properties are changing, which is vital in processes like dynamic range compression and sound synthesis.</p>
+
+    <h3>Key Rules for Derivatives:</h3>
+    <ul>
+        <li><span class="formula">Power Rule: $ \frac{d}{dx} x^n = nx^{n-1} $</span></li>
+        <li><span class="formula">Product Rule: $ \frac{d}{dx} [u(x) v(x)] = u'(x)v(x) + u(x)v'(x) $</span></li>
+        <li><span class="formula">Chain Rule: $ \frac{d}{dx} f(g(x)) = f'(g(x)) \cdot g'(x) $</span></li>
+    </ul>
+
+    <h3>Example 1: Compression and Derivatives</h3>
+    <div class="example">
+        <p><strong>Concept:</strong> In audio compression, the derivative detects changes in the signal’s amplitude. This allows a compressor to adjust attack and release times, smoothing volume transitions and avoiding distortion.</p>
+        <p><strong>Steps:</strong></p>
+        <ol>
+            <li><strong>Signal Function:</strong> Define the amplitude of a signal as \( A(t) = 5 \sin(t) \).</li>
+            <li><strong>Find the Derivative:</strong> Differentiate to measure the rate of change:
+                \[ \frac{dA}{dt} = 5 \cos(t) \]</li>
+            <li><strong>Interpretation:</strong> The derivative shows how quickly the amplitude changes. A large derivative indicates a rapid increase in amplitude, prompting the compressor to quickly reduce gain (attack time) to prevent distortion. When the derivative is near zero, the compressor releases more gradually, allowing a smoother transition.</li>
+        </ol>
+    </div>
+
+    <h3>Example 2: Envelope Generators in Sound Synthesis</h3>
+    <div class="example">
+        <p><strong>Concept:</strong> Envelope generators shape the amplitude of sound over time, typically using an ADSR (Attack, Decay, Sustain, Release) envelope. Derivatives help control how fast the amplitude changes during attack and release phases.</p>
+        <p><strong>Steps:</strong></p>
+        <ol>
+            <li><strong>Attack Phase:</strong> \( A(t) = 2t \) for \( 0 \leq t \leq 1 \), so
+                \[ \frac{dA}{dt} = 2 \]</li>
+            <li><strong>Release Phase:</strong> \( A(t) = 5e^{-2t} \) for \( t \geq 0 \), so
+                \[ \frac{dA}{dt} = -10e^{-2t} \]</li>
+            <li><strong>Interpretation:</strong> The derivative in the attack phase is positive, indicating an increase in amplitude, while in the release phase it is negative, indicating a decrease. The rate of change helps in shaping how quickly the sound transitions through these phases.</li>
+        </ol>
+    </div>
+
+    <h2>2.3 Integrals in Audio Processing</h2>
+    <p>An integral measures the accumulation of values over time. In audio processing, integrals calculate total energy, duration, or loudness of a signal over a specified period, which is essential for understanding long-term properties of audio.</p>
+
+    <h3>Key Rules for Integrals:</h3>
+    <ul>
+        <li><span class="formula">Power Rule for Integration: $ \int x^n \, dx = \frac{x^{n+1}}{n+1} + C $</span></li>
+        <li><span class="formula">Definite Integral: $ \int_a^b f(x) \, dx $ measures the total accumulation from point \( a \) to \( b \).</li>
+    </ul>
+
+    <h3>Example 3: LUFS Calculation (Fully Worked Example)</h3>
+    <div class="example">
+       <p><strong>Concept:</strong> LUFS (Loudness Units Full Scale) measures the average loudness of a signal over time. To calculate LUFS, we start by squaring the signal to capture its energy, then integrate over the period to calculate the average loudness.</p>
+        <p><strong>Steps:</strong></p>
+        <ol>
+            <li><strong>Define the Signal Function:</strong> \( s(t) = 3 \sin(t) \)</li>
+            <li><strong>Square the Signal:</strong> 
+                \[ s^2(t) = 9 \sin^2(t) \]</li>
+            <li><strong>Integrate:</strong> Compute the integral over one period:
+                \[ \int_0^{2\pi} 9 \sin^2(t) \, dt \]</li>
+            <li><strong>Simplify the Integral:</strong> Use the identity \( \sin^2(t) = \frac{1 - \cos(2t)}{2} \) to evaluate the integral, resulting in an average loudness of 4.5.</li>
+        </ol>
+    </div>
+
+    <h3>Example 4: Sound Synthesis and Integrals</h3>
+    <div class="example">
+        <p><strong>Concept:</strong> This example calculates the total energy of a square wave, a waveform with strong harmonic content. Integrating over one period gives the total energy of the wave, showing the harmonic richness in complex sounds.</p>
+        <p><strong>Steps:</strong></p>
+        <ol>
+            <li><strong>Square Wave Function:</strong>
+                \[
+                s(t) = 
+                \begin{cases}
+                    1 & \text{for } 0 \leq t < \pi \\
+                    -1 & \text{for } \pi \leq t < 2\pi
+                \end{cases}
+                \]</li>
+            <li><strong>Integral of Energy:</strong>
+                \[ \int_0^{2\pi} s^2(t) \, dt = 2\pi \]</li>
+            <li><strong>Interpretation:</strong> The total energy over one period is \( 2\pi \), representing the square wave's harmonic intensity.</li>
+        </ol>
+    </div>
+
+    <h2>2.4 Practice Problems</h2>
+    <ul>
+        <li>Differentiate the function \( f(x) = 4x^3 + 3x^2 \).</li>
+        <li>Apply the product rule to \( f(x) = (2x^2)(x + 4) \).</li>
+        <li>Find the integral of \( f(x) = 6x^2 \) from \( x = 0 \) to \( x = 4 \).</li>
+        <li>Calculate \( \int_2^5 (4x^2 + 2x) \, dx \).</li>
+    </ul>
+
+    <h2>Further Reading</h2>
+    <ul>
+        <li><a href="https://en.wikipedia.org/wiki/Calculus">Introduction to Calculus (Wikipedia)</a></li>
+        <li><a href="https://www.soundonsound.com/techniques/compression-made-easy">Compression Techniques in Audio (Sound on Sound)</a></li>
+        <li><a href="https://tech.ebu.ch/docs/tech/tech3343.pdf">EBU R 128: Loudness Measurement and LUFS</a></li>
+    </ul>
+
+</body>
+</html>

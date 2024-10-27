@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5: Matrices and Transformations in Audio Processing</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- MathJax Configuration -->
+    <script type="text/javascript">
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            chtml: {
+                scale: 1.4  /* Adjust this value to make formulas bigger (1.4 = 140%) */
+            }
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2E86C1;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.75em;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        .example {
+            background-color: #EAF2F8;
+            padding: 15px;
+            border-left: 4px solid #3498DB;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .example h3 {
+            margin-top: 0;
+        }
+
+        .example ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .example li {
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-left: 4px solid #3498DB;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        /* Responsive design */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 1.75em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            h3 {
+                font-size: 1.25em;
+            }
+            ul, ol {
+                padding-left: 15px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            h2 {
+                font-size: 1.25em;
+            }
+            h3 {
+                font-size: 1.1em;
+            }
+            body {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Chapter 5: Matrices and Transformations in Audio Processing</h1>
+
+<h2>5.1 Introduction: Why Matrices Matter in Audio</h2>
+<p>Matrices are crucial in audio processing, especially when handling multichannel audio, applying transformations, and designing filters. They provide a structured way to represent audio channels and transformations, allowing us to manipulate and mix audio signals effectively.</p>
+
+<h2>5.2 Matrix Representation of Audio Signals</h2>
+<p>In stereo or multichannel audio, each channel can be represented as a vector, and we can combine these into a matrix for easier manipulation.</p>
+
+<h3>Example: Stereo Audio Signals</h3>
+<div class="example">
+    <p>A stereo audio signal can be represented as two vectors, one for each channel (left and right):</p>
+    <pre><code>
+x_L = [x_L1, x_L2, ..., x_Ln]
+x_R = [x_R1, x_R2, ..., x_Rn]
+    </code></pre>
+    <p>We can combine these vectors into a matrix:</p>
+    <pre><code>
+X = [
+    x_L1  x_R1
+    x_L2  x_R2
+    ...   ...
+    x_Ln  x_Rn
+]
+    </code></pre>
+    <p>This matrix format simplifies multichannel mixing and manipulation tasks.</p>
+</div>
+
+<h2>5.3 Stereo and Multichannel Audio Transformations</h2>
+<p>Using matrices, we can perform transformations like adjusting stereo width, panning, and downmixing multichannel audio to stereo. Each matrix element corresponds to an interaction between channels.</p>
+
+<h3>Example 1: Stereo Field Manipulation Using Matrices</h3>
+<div class="example">
+    <p>To adjust the stereo width, we can apply a transformation matrix:</p>
+    <p class="formula">
+        \[
+        \begin{bmatrix} L' \\ R' \end{bmatrix} = \begin{bmatrix} 1 & k \\ k & 1 \end{bmatrix} \begin{bmatrix} L \\ R \end{bmatrix}
+        \]
+    </p>
+    <p>Here, \( L \) and \( R \) are the original left and right channels, \( k \) adjusts width, and \( L' \), \( R' \) are the transformed channels.</p>
+    <p><strong>Example Calculation:</strong> For \( k = 0.5 \) with input values \( L = 0.8 \) and \( R = 0.6 \):</p>
+    <ul>
+        <li>Calculate \( L' = 1 \times 0.8 + 0.5 \times 0.6 = 1.1 \)</li>
+        <li>Calculate \( R' = 0.5 \times 0.8 + 1 \times 0.6 = 1.0 \)</li>
+    </ul>
+</div>
+
+<h3>Example 2: Multichannel Mixing (5.1 to Stereo Downmix)</h3>
+<div class="example">
+    <p>Multichannel audio, like 5.1 surround sound, can be downmixed to stereo:</p>
+    <p class="formula">
+        \[
+        \begin{bmatrix} Stereo_L \\ Stereo_R \end{bmatrix} = \begin{bmatrix} 0.7 & 0.3 & 0.2 & 0.1 & 0 & 0 \\ 0.3 & 0.7 & 0.2 & 0.1 & 0 & 0 \end{bmatrix} \begin{bmatrix} FL \\ FR \\ C \\ LFE \\ BL \\ BR \end{bmatrix}
+        \]
+    </p>
+    <p>This matrix balances front, center, and surround channels for stereo output.</p>
+</div>
+
+<h2>5.4 Matrix Filtering and Convolution</h2>
+<p>Convolution, a common filtering technique, can be represented as matrix multiplication, where one matrix represents the input signal and another represents the filter kernel.</p>
+
+<h3>Example: Applying a Filter Using Convolution</h3>
+<div class="example">
+    <p>Suppose we have a filter kernel \( K \) and an audio signal \( X \). Convolution of \( K \) and \( X \) applies the filter to the audio:</p>
+    <pre><code>
+K = [
+    0.2  0.5  0.2
+    0.1  0.3  0.1
+]
+
+X = [
+    x_1, x_2, x_3
+]
+    </code></pre>
+    <p>Convolution results in a transformed signal with the filter applied, smoothing or enhancing specific frequencies.</p>
+</div>
+
+<h2>5.5 Eigenvalues and Eigenvectors in Audio</h2>
+<p>Eigenvalues and eigenvectors help analyze the behavior of filters and transformations, such as finding dominant signal components or applying dimensionality reduction techniques.</p>
+
+<h3>Example: Analyzing a Filter Using Eigenvalues</h3>
+<div class="example">
+    <p>Given a matrix representing an audio filter, we calculate eigenvalues to understand the filter's effect:</p>
+    <pre><code>
+A = [
+    2  1
+    1  2
+]
+Eigenvalues: λ_1 = 3, λ_2 = 1
+    </code></pre>
+    <p>Eigenvalues indicate how the filter amplifies or reduces certain signal aspects, helping in frequency response analysis.</p>
+</div>
+
+<h2>5.6 Practice Problems</h2>
+<ul>
+    <li><strong>Matrix Representation</strong>: Represent a 3-channel audio signal as a matrix.</li>
+    <li><strong>Transformation Application</strong>: Apply the matrix \( A = [0.6 \ 0.4; 0.5 \ 0.5] \) to mix two audio channels.</li>
+    <li><strong>Convolution Exercise</strong>: Calculate the convolution of a sample signal with a simple filter kernel.</li>
+    <li><strong>Eigenvalues of a Filter</strong>: Find the eigenvalues for a 2x2 matrix representing an audio filter.</li>
+</ul>
+
+</body>
+</html>

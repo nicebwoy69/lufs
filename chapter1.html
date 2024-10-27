@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 1: Functions, Rules, and Common Mistakes</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- MathJax Configuration -->
+    <script type="text/javascript">
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            chtml: {
+                scale: 1.4  /* Adjust this value to make formulas bigger */
+            }
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background-color: #f4f4f4;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .formula {
+            font-weight: bold;
+            font-size: 1.2em;
+            background-color: #e6f7ff;
+            padding: 5px;
+            margin: 10px 0;
+            display: inline-block;
+        }
+        .example {
+            border-left: 4px solid #4CAF50;
+            padding-left: 10px;
+            background-color: #f9f9f9;
+            margin: 20px 0;
+            padding: 10px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 1.1em;
+        }
+        ul {
+            margin: 20px 0;
+            padding: 0;
+            list-style: none;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Chapter 1: Functions, Rules, and Common Mistakes</h1>
+
+    <h2>1.1 Introduction to Functions</h2>
+    <p>In calculus, a function describes how one quantity depends on another. A function, written as $f(x)$, shows how the dependent variable $f(x)$ changes as you adjust the independent variable $x$. Functions are fundamental in audio processing for representing time-dependent audio signals.</p>
+
+    <h2>1.2 Types of Functions and Their Rules</h2>
+    
+    <h3>Linear Functions</h3>
+    <p>Linear functions take the form:</p>
+    <p class="formula">$y = mx + b$</p>
+    <ul>
+        <li><strong>$m$</strong> is the slope, indicating how steep the line is.</li>
+        <li><strong>$b$</strong> is the y-intercept, showing where the line crosses the y-axis.</li>
+    </ul>
+    <h4>Common Mistakes:</h4>
+    <ul>
+        <li>Confusing the slope and y-intercept values.</li>
+        <li>Assuming the slope is zero when none is specified, whereas the default is $m = 1$.</li>
+    </ul>
+    <h4>Example:</h4>
+    <p>To graph $y = 3x - 2$:</p>
+    <ol>
+        <li>Start by plotting the y-intercept at $(0, -2)$.</li>
+        <li>Since the slope is 3, move up 3 units and right 1 unit from $(0, -2)$ to $(1, 1)$.</li>
+        <li>Draw a straight line through these points.</li>
+    </ol>
+
+    <h3>Quadratic Functions</h3>
+    <p>The general form of a quadratic function is:</p>
+    <p class="formula">$y = ax^2 + bx + c$</p>
+    <ul>
+        <li>If $a > 0$, the parabola opens upward.</li>
+        <li>If $a < 0$, the parabola opens downward.</li>
+    </ul>
+    <h4>Common Mistakes:</h4>
+    <ul>
+        <li>Errors in applying the quadratic formula or factoring incorrectly.</li>
+    </ul>
+    <h4>Example:</h4>
+    <p>For $y = x^2 - 4x + 4$, factor it as $y = (x - 2)^2$ to see the vertex is at $(2, 0)$. Plot this and additional points to sketch the parabola.</p>
+
+    <h3>Exponential Functions</h3>
+    <p>The general form of an exponential function is:</p>
+    <p class="formula">$y = ae^{bx}$</p>
+    <ul>
+        <li>$e$ is Euler’s number, approximately 2.718.</li>
+        <li>If $b > 0$, the function grows exponentially; if $b < 0$, it decays exponentially.</li>
+    </ul>
+    <h4>Common Mistakes:</h4>
+    <ul>
+        <li>Confusing $e^{bx}$ with $bx \cdot e$.</li>
+    </ul>
+
+    <h3>Logarithmic Functions</h3>
+    <p>Logarithmic functions have the form:</p>
+    <p class="formula">$y = \log_b(x)$</p>
+    <ul>
+        <li><strong>$b$</strong> is the logarithm base. Common bases include 2, 10 (for decibels), and $e$.</li>
+    </ul>
+    <h4>Example:</h4>
+    <p>Calculating the decibel level of a sound 10 times as intense as a reference level:</p>
+    <p class="formula">$dB = 10 \log_{10}(10) = 10 \, dB$</p>
+
+    <h3>Trigonometric Functions</h3>
+    <p>Trigonometric functions model periodic behavior, vital in audio processing for waveforms:</p>
+    <ul>
+        <li>$y = \sin(x)$</li>
+        <li>$y = \cos(x)$</li>
+        <li>$y = \tan(x)$</li>
+    </ul>
+    <h4>Common Mistakes:</h4>
+    <ul>
+        <li>Using degrees instead of radians in calculus.</li>
+        <li>Misinterpreting phase shifts in sine and cosine waves.</li>
+    </ul>
+    <h4>Example:</h4>
+    <p>To plot $y = \sin(x)$ from $0$ to $2\pi$:</p>
+    <ol>
+        <li>At $x = 0$, $y = 0$. Plot $(0, 0)$.</li>
+        <li>At $x = \pi$, $y = 0$. Plot $(\pi, 0)$.</li>
+        <li>Continue for $2\pi$, observing the periodic pattern.</li>
+    </ol>
+
+    <h3>Piecewise Functions</h3>
+    <p>Piecewise functions use different rules over different intervals, helpful in audio processing for segmented changes over time.</p>
+    <p>Example:</p>
+    <pre><code>
+f(x) = {
+    x + 2,  if x < 0
+    -x + 3, if x >= 0
+}
+    </code></pre>
+
+    <h2>1.3 Working with Derivatives</h2>
+    <p>Derivatives describe how quickly a function changes, fundamental for tracking changes in audio over time.</p>
+
+    <h3>Power Rule:</h3>
+    <p class="formula">$\frac{d}{dx} x^n = nx^{n-1}$</p>
+    <p>For example, the derivative of $x^3$ is $3x^2$.</p>
+
+    <h3>Product Rule:</h3>
+    <p class="formula">$\frac{d}{dx} [u(x) v(x)] = u'(x)v(x) + u(x)v'(x)$</p>
+
+    <h3>Chain Rule:</h3>
+    <p class="formula">$\frac{d}{dx} f(g(x)) = f'(g(x)) \cdot g'(x)$</p>
+    <p>This rule helps differentiate nested functions.</p>
+
+    <h3>Example of Applying the Chain Rule:</h3>
+    <p>If $f(x) = (3x^2 + 2)^4$, let $g(x) = 3x^2 + 2$. Find $f'(x)$ by first differentiating the outer and inner functions:</p>
+    <p class="formula">$f'(x) = 24x(3x^2 + 2)^3$</p>
+
+    <h2>1.4 Practice Problems</h2>
+    <ul>
+        <li>Differentiate $f(x) = 3x^4 + 2x^2$.</li>
+        <li>Use the product rule for $f(x) = (x^2)(x + 3)$.</li>
+        <li>Differentiate $f(x) = \sin(3x)$.</li>
+        <li>Solve $f(x) = (2x^3 + 5x)^2$ using the chain rule.</li>
+    </ul>
+
+</body>
+</html>

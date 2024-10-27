@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 9: Key Formulas and Practice for Audio Loudness and Signal Processing</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: auto; }
+        h1, h2, h3 { color: #2c3e50; }
+        .formula { font-weight: bold; font-size: 1.4em; color: #2980b9; }
+        .example, .exercise { background-color: #f9f9f9; padding: 10px; border-left: 4px solid #3498db; margin: 15px 0; }
+        .solution { margin-top: 10px; padding: 10px; background-color: #eaf2f8; border-left: 4px solid #85c1e9; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+        .note { font-style: italic; color: #666; }
+        /* Increase font size and boldness for MathJax-rendered formulas */
+        .mjx-chtml { font-size: 1.4em; line-height: 1.5; font-weight: bold; font-family: 'Times New Roman', Times, serif; }
+    </style>
+    <!-- MathJax Library -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+
+<h1>Chapter 9: Key Formulas and Practice for Audio Loudness and Signal Processing</h1>
+
+<h2>9.1 Introduction</h2>
+<p>This chapter presents essential formulas and examples for audio loudness and signal processing, focusing on the LUFS framework and related calculations. Each concept is broken down with examples and practical applications to clarify the mathematical foundations of audio signal processing.</p>
+
+<h2>9.2 Mean Square Calculation</h2>
+<p>The mean square of a signal is fundamental for evaluating loudness and power by calculating the average square over a period. It is commonly used in audio engineering to analyze a signal’s energy content.</p>
+
+<p class="formula">Mean Square Calculation: \[ z_T = \frac{1}{T} \int_{0}^{T} y_i^2(t) \, dt \]</p>
+
+<div class="example">
+    <h3>Example:</h3>
+    <p>Calculate the mean square for a signal \( y(t) = 3 \sin(t) \) over \( T = 2\pi \).</p>
+    <div class="solution">
+        <strong>Steps:</strong>
+        <ol>
+            <li><strong>Square the Function:</strong> \( y^2(t) = 9 \sin^2(t) \)</li>
+            <li><strong>Integrate Over the Period:</strong> \( T = 2\pi \)
+                \[ z_T = \frac{1}{2\pi} \int_{0}^{2\pi} 9 \sin^2(t) \, dt \]</li>
+            <li><strong>Solve the Integral:</strong> Using trigonometric identities, this results in:
+                \[ z_T = \frac{9}{2} = 4.5 \]</li>
+        </ol>
+        <p>This calculation indicates that the mean square value, or average energy, of this signal over the period is 4.5.</p>
+    </div>
+</div>
+
+<h2>9.3 Loudness Calculation (LKFS)</h2>
+<p>The ITU-R BS.1770 standard defines loudness in LUFS, using logarithmic functions to measure loudness across channels with different weights. This is crucial for consistent loudness levels across broadcasting and streaming platforms.</p>
+
+<p class="formula">Loudness (LK): \[ LK = -0.691 + 10 \log_{10} \left( \sum G_i z_i \right) \]</p>
+
+<div class="example">
+    <h3>Example:</h3>
+    <p>Given channels with weights \( G_1 = 0.8 \) and \( G_2 = 0.6 \), and mean squares \( z_1 = 0.5 \) and \( z_2 = 0.3 \):</p>
+    <div class="solution">
+        <strong>Steps:</strong>
+        <ol>
+            <li><strong>Substitute the Values:</strong> Plugging the values into the formula:
+                \[ LK = -0.691 + 10 \log_{10} (0.8 \times 0.5 + 0.6 \times 0.3) \]</li>
+            <li><strong>Calculate the Result:</strong> This simplifies to:
+                \[ LK \approx -1.25 \]</li>
+        </ol>
+        <p>The calculated loudness level in LUFS is approximately -1.25, reflecting the perceived loudness of the multi-channel signal.</p>
+    </div>
+</div>
+
+<h2>9.4 Weighted Summation for Channels</h2>
+<p>Weighted summation combines the contributions of different channels to overall loudness, with weights reflecting each channel’s spatial characteristics and impact.</p>
+
+<p class="formula">Weighted Summation: \[ \sum G_i z_i \]</p>
+
+<div class="example">
+    <h3>Example:</h3>
+    <p>Combine channels with weights \( G_1 = 1.2 \), \( z_1 = 0.4 \), \( G_2 = 0.5 \), and \( z_2 = 0.6 \).</p>
+    <div class="solution">
+        <strong>Steps:</strong>
+        <ol>
+            <li><strong>Calculate the Weighted Sum:</strong>
+                \[ \sum G_i z_i = 1.2 \times 0.4 + 0.5 \times 0.6 = 0.78 \]</li>
+        </ol>
+        <p>The weighted summation result is 0.78, representing the combined loudness impact of these channels.</p>
+    </div>
+</div>
+
+<h2>9.5 K-Weighting Filter Design</h2>
+<p>K-weighting filters emphasize certain frequencies to better match human loudness perception. This filter design typically involves a second-order filter, shaped using specific coefficients to adjust the response curve.</p>
+<p class="note">Note: Implementing a K-weighting filter design requires basic knowledge of digital filter theory, particularly the Z-transform.</p>
+
+<h2>9.6 Logarithmic Sound Level Calculation</h2>
+<p>Sound levels are often measured logarithmically in dB, representing the ratio of power levels. This calculation is widely used in audio engineering to quantify loudness.</p>
+
+<p class="formula">Sound Level (dB): \[ \text{Loudness} = 10 \log_{10} \left( \frac{P}{P_0} \right) \]</p>
+
+<div class="example">
+    <h3>Example:</h3>
+    <p>Calculate the sound level for \( P = 0.01 \, \text{W} \) with a reference \( P_0 = 1 \times 10^{-12} \, \text{W} \).</p>
+    <div class="solution">
+        <strong>Steps:</strong>
+        <ol>
+            <li><strong>Substitute the Values:</strong> 
+                \[ \text{Loudness} = 10 \log_{10} \left( \frac{0.01}{1 \times 10^{-12}} \right) \]</li>
+            <li><strong>Calculate the Result:</strong> 
+                \[ \text{Loudness} = 110 \, \text{dB} \]</li>
+        </ol>
+    </div>
+</div>
+
+<h2>9.7 True-Peak Level and Over-Sampling Ratio</h2>
+<p>The true-peak level measures the highest amplitude in a signal, with over-sampling helping to capture inter-sample peaks and minimize under-read errors.</p>
+
+<p class="formula">True-Peak Calculation: \[ \text{True-Peak} = \max \left( \frac{x(t)}{x_{\text{max}}} \right) \]</p>
+
+<h2>9.8 Gating Technique for Loudness Measurement</h2>
+<p>The gating technique excludes low-level sections of audio from loudness measurements by focusing only on segments above a set threshold, enhancing measurement accuracy.</p>
+
+<p class="formula">Gating Set: \[ J_g = \{ j : l_j > \Gamma_r \} \]</p>
+
+<div class="example">
+    <h3>Example:</h3>
+    <p>Assume a threshold \( \Gamma_r = -10 \) dB and segments with loudness \( l_j = \{-5, -12, -9, -8\} \).</p>
+    <div class="solution">
+        <strong>Steps:</strong>
+        <ol>
+            <li>Compare each segment’s loudness to the threshold:
+                <ul>
+                    <li>\(-5\) dB > \(-10\) dB (included)</li>
+                    <li>\(-12\) dB < \(-10\) dB (excluded)</li>
+                    <li>\(-9\) dB > \(-10\) dB (included)</li>
+                    <li>\(-8\) dB > \(-10\) dB (included)</li>
+                </ul>
+            </li>
+            <li>Form the Set \( J_g \): \[ J_g = \{-5, -9, -8\} \]</li>
+        </ol>
+    </div>
+</div>
+
+<h2>9.9 Practice Problems</h2>
+<ul>
+    <li>Calculate the mean square for \( y(t) = 2 \sin(t) \) over \( T = 2\pi \).</li>
+    <li>Compute loudness \( LK \) if \( G_1 = 0.9 \), \( z_1 = 0.4 \), \( G_2 = 0.7 \), and \( z_2 = 0.5 \).</li>
+    <li>Determine the sound level for \( P = 0.05 \, \text{W} \) with \( P_0 = 1 \times 10^{-12} \, \text{W} \).</li>
+    <li>Apply gating to blocks with loudness levels \( \{-15, -8, -10, -5\} \) and threshold \( \Gamma_r = -10 \).</li>
+</ul>
+
+<h2>9.10 Summary Table</h2>
+<table>
+    <tr><th>Formula</th><th>Description</th></tr>
+    <tr><td>Mean Square: \( z_T = \frac{1}{T} \int_{0}^{T} y_i^2(t) \, dt \)</td><td>Calculates average power of a signal.</td></tr>
+    <tr><td>Loudness (LK): \( LK = -0.691 + 10 \log_{10} \left( \sum G_i z_i \right) \)</td><td>Measures loudness in LUFS.</td></tr>
+    <tr><td>Weighted Sum: \( \sum G_i z_i \)</td><td>Combines contributions from channels.</td></tr>
+    <tr><td>Sound Level (dB): \( \text{Loudness} = 10 \log_{10} \left( \frac{P}{P_0} \right) \)</td><td>Calculates loudness in decibels.</td></tr>
+</table>
+
+</body>
+</html>
